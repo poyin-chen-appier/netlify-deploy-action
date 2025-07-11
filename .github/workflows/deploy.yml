@@ -1,45 +1,44 @@
-name: Netlify Deploy
+# netlify-deploy-action/.github/workflows/deploy.yml
+name: Netlify Deploy Reusable Workflow
 
 on:
   workflow_call:
     inputs:
       build-dir:
-        required: false
+        required: true
         type: string
-        default: '.'
-      node-version:
-        required: false
+      site-id:
+        required: true
         type: string
-        default: '18'
     secrets:
       NETLIFY_AUTH_TOKEN:
-        required: true
-      NETLIFY_SITE_ID:
         required: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Setup Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ inputs.node-version }}
+          node-version: 18
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build site
+      - name: Build project
         run: npm run build
 
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
 
       - name: Deploy to Netlify
-        run: netlify deploy --prod --dir=${{ inputs.build-dir }} --site=$NETLIFY_SITE_ID
+        run: |
+          echo "Deploying to Netlify site: ${{ inputs.site-id }}"
+          netlify deploy --prod --dir=${{ inputs.build-dir }} --site=${{ inputs.site-id }}
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
