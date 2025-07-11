@@ -1,6 +1,6 @@
 # Netlify Deploy Workflow
 
-A reusable GitHub Actions workflow for deploying websites to Netlify.
+A reusable GitHub Actions workflow for deploying static websites to Netlify.
 
 ## Quick Setup
 
@@ -50,25 +50,6 @@ jobs:
 2. Click "New token"
 3. Copy the generated token
 
-### 5. Ensure package.json Exists
-
-Your project must have a `package.json` with a `build` script:
-
-```json
-{
-    "name": "my-static-site",
-    "version": "1.0.0",
-    "description": "A simple static site for Netlify deployment",
-    "scripts": {
-      "start": "live-server",
-      "build": "echo 'No build needed for static site'"
-    },
-    "devDependencies": {
-      "live-server": "^1.2.2"
-    }
-}
-```
-
 ## Usage
 
 - **Auto-deploy**: Push to `master` branch, you can replace the branch name
@@ -76,6 +57,11 @@ Your project must have a `package.json` with a `build` script:
 
 ## Configuration
 
-- **`build-dir`**: Directory with built files (default: `.`)
+- **`build-dir`**: Directory with static files to deploy (default: `.`)
 - **`site-id`**: Your Netlify site ID
 - **`NETLIFY_AUTH_TOKEN`**: Your Netlify auth token
+
+## Requirements
+
+- Your project must contain static files (HTML, CSS, JS, images, etc.)
+- No build process required - files are deployed as-is
